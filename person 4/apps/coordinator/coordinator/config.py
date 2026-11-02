@@ -1,0 +1,64 @@
+"""
+Coordinator configuration.
+
+Reads from environment variables (with defaults for development).
+In production, variables are populated from the .env file or the deployment
+environment. Do not read os.environ directly — use this Settings object.
+"""
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """Application-wide configuration."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    # -------------------------------------------------------------------------
+    # Server
+    # -------------------------------------------------------------------------
+    coordinator_host: str = "0.0.0.0"
+    coordinator_port: int = 8000
+    coordinator_debug: bool = False
+    coordinator_log_level: str = "INFO"
+
+    # -------------------------------------------------------------------------
+    # Database
+    # -------------------------------------------------------------------------
+    # Primary async database URL (asyncpg driver).
+    # In development, defaults to the Docker Compose PostgreSQL instance.
+    # Override via DATABASE_URL environment variable or .env file.
+    database_url: str = "postgresql+asyncpg://crowdgpu:changeme@localhost:5432/crowdgpu"
+
+    # Optional separate test database URL for integration tests (ADR-003 Tier 2).
+    # Set TEST_DATABASE_URL to run tests/integration/ against a real PostgreSQL instance.
+    test_database_url: str | None = None
+
+    # -------------------------------------------------------------------------
+    # Redis (not connected in bootstrap)
+    # -------------------------------------------------------------------------
+    redis_url: str = "redis://localhost:6379/0"
+
+    # -------------------------------------------------------------------------
+    # Security (placeholder — not used in bootstrap)
+    # -------------------------------------------------------------------------
+    secret_key: str = "changeme-replace-with-a-secure-random-key-in-production"
+
+    # -------------------------------------------------------------------------
+    # WebRTC / ICE Servers
+    # -------------------------------------------------------------------------
+    stun_servers: list[str] = ["stun:stun.l.google.com:19302"]
+    turn_server: str | None = None
+    turn_username: str | None = None
+    turn_credential: str | None = None
+    turn_realm: str = "crowdgpu.local"
+    turn_secret: str | None = None
+
+
+# Module-level singleton — import this everywhere in the coordinator.
+settings = Settings()

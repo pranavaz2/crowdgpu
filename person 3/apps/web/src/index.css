@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------- */
+/* Base reset + global tokens                                  */
+/* ---------------------------------------------------------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-gray-950 text-gray-100 font-sans min-h-screen;
+    /* Subtle grid texture gives depth without being decorative */
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgb(255 255 255 / 0.02) 1px,
+      transparent 0
+    );
+    background-size: 32px 32px;
+  }
+
+  /* Consistent scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-gray-700;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
+  }
+
+  /* Focus ring — uses brand colour */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-gray-950;
+  }
+
+  /* Remove focus ring for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Monospace */
+  code, kbd, samp, pre, .font-mono {
+    font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+    font-size: 0.875em;
+  }
+}
+
+/* ---------------------------------------------------------- */
+/* Component utilities                                         */
+/* ---------------------------------------------------------- */
+@layer components {
+  /* Card — shared border + bg pattern used across the app */
+  .card {
+    @apply rounded-xl border border-gray-800 bg-gray-900;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-gray-800;
+  }
+
+  /* Muted label — used throughout for sub-labels */
+  .label-muted {
+    @apply text-xs font-medium text-gray-500 uppercase tracking-wide;
+  }
+}

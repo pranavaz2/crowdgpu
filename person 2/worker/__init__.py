@@ -1,0 +1,1 @@
+"""CrowdGPU Worker package."""

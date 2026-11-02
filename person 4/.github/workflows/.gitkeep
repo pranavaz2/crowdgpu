@@ -1,0 +1,5 @@
+# GitHub Actions CI/CD workflows will be added here in a later phase.
+#
+# Planned workflows:
+# - ci.yml        — lint, test, build on push/PR
+# - deploy.yml    — deployment pipeline (future)

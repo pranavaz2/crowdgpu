@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crowdgpu-worker"
+version = "0.1.0"
+description = "CrowdGPU Worker node — GPU detection, registration, heartbeat, and job execution"
+requires-python = ">=3.10"
+dependencies = [
+    "pynvml>=11.0.0",
+    "requests>=2.28.0",
+]
+
+[project.optional-dependencies]
+cuda = [
+    # Install PyTorch with CUDA separately:
+    # pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+]
+docker = [
+    "docker>=6.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio",
+]
+
+[project.scripts]
+crowdgpu-worker = "worker.worker:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["worker*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+log_cli = true
+log_cli_level = "WARNING"
+filterwarnings = [
+    "ignore::FutureWarning",
+]
